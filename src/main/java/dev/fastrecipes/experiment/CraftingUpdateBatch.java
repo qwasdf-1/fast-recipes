@@ -1,5 +1,6 @@
 package dev.fastrecipes.experiment;
 
+import dev.fastrecipes.FastRecipesConfig;
 import com.mojang.logging.LogUtils;
 import java.lang.ref.WeakReference;
 import net.fabricmc.loader.api.FabricLoader;
@@ -23,7 +24,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 
 public final class CraftingUpdateBatch {
-    private static final boolean ENABLED = Boolean.getBoolean("fastrecipes.batchCrafting");
+    private static final boolean ENABLED = FastRecipesConfig.current().batchCrafting();
     private static final boolean FABRIC_INGREDIENTS = FabricLoader.getInstance().isModLoaded("fabric-recipe-api-v1");
     private static final ThreadLocal<Batch> ACTIVE = new ThreadLocal<>();
 

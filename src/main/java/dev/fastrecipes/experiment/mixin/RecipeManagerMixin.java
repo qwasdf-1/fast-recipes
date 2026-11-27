@@ -1,5 +1,6 @@
 package dev.fastrecipes.experiment.mixin;
 
+import dev.fastrecipes.FastRecipesConfig;
 import com.mojang.logging.LogUtils;
 import dev.fastrecipes.experiment.CraftingLookup;
 import dev.fastrecipes.experiment.CraftingLookup.Mode;
@@ -39,18 +40,17 @@ abstract class RecipeManagerMixin implements StonecuttingIndexAccess {
     private RecipeMap recipes;
 
     @Unique
-    private static final String fastrecipes$modeName = System.getProperty("fastrecipes.lookup", "off");
+    private static final String fastrecipes$modeName = FastRecipesConfig.current().lookup().id();
     @Unique
-    private static final Mode fastrecipes$mode = Mode.parse(fastrecipes$modeName);
+    private static final Mode fastrecipes$mode = FastRecipesConfig.current().lookup();
     @Unique
-    private static final int fastrecipes$cacheEntries = Math.clamp(
-            Integer.getInteger("fastrecipes.craftingCacheEntries", 1), 1, 16);
+    private static final int fastrecipes$cacheEntries = FastRecipesConfig.current().craftingCacheEntries();
     @Unique
     private static final boolean fastrecipes$fabricRecipeApi = FabricLoader.getInstance().isModLoaded("fabric-recipe-api-v1");
     @Unique
     private static final boolean fastrecipes$measureSetup = Boolean.getBoolean("fastrecipes.measureSetup");
     @Unique
-    private static final boolean fastrecipes$smithingEnabled = Boolean.getBoolean("fastrecipes.smithingIndex");
+    private static final boolean fastrecipes$smithingEnabled = FastRecipesConfig.current().smithingIndex();
     @Unique
     private CraftingLookup<RecipeHolder<CraftingRecipe>> fastrecipes$lookup;
     @Unique

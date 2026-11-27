@@ -1,0 +1,51 @@
+name: Publish to CurseForge
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing GitHub Release tag
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: curseforge-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || vars.CURSEFORGE_PROJECT_ID != ''
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - name: Download and verify the GitHub release artifact
+        run: bash .github/scripts/prepare-release.sh
+      - name: Publish Fabric file
+        env:
+          PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID || secrets.CURSEFORGE_PROJECT_ID }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ "$PROJECT_ID" =~ ^[0-9]+$ ]] || { echo "Set CURSEFORGE_PROJECT_ID to the numeric project ID." >&2; exit 1; }
+          test -n "$CURSEFORGE_TOKEN" || { echo "Set the CURSEFORGE_TOKEN Actions secret." >&2; exit 1; }
+          metadata="$RUNNER_TEMP/curseforge-file.json"
+          jq -n --arg name "Fast Recipes $VERSION" --arg minecraft "$MINECRAFT" --arg channel "$CHANNEL" \
+            --rawfile changelog "$CHANGELOG_FILE" \
+            '{displayName:$name, changelog:$changelog, changelogType:"markdown",
+              releaseType:$channel, gameVersionNames:[$minecraft,"Fabric","Server"]}' > "$metadata"
+          result="$RUNNER_TEMP/curseforge-response.json"
+          curl --silent --show-error --fail -H "X-Api-Token: $CURSEFORGE_TOKEN" \
+            -F "metadata=<$metadata" -F "file=@$JAR_FILE" \
+            "https://minecraft.curseforge.com/api/projects/$PROJECT_ID/upload-file" > "$result"
+          jq -er 'select(.id) | "Published CurseForge file \(.id)"' "$result"

@@ -55,6 +55,13 @@ CPU windows include inventory edits, the click fence, and the output checks
 on the server thread. The dense diagnostics remain separate and record
 lookup setup, postings setup, and each adaptive tree step independently.
 
+Use `scripts/run-release-study.py --batching` for dedicated 3×3 shift-click
+batching. Each block compares adaptive lookup, a repeated adaptive
+control, and adaptive lookup with batching. The harness verifies four
+glass-bottle remainders and saved crafting counts in each server instance.
+Pass one `--extra-mod` per JAR to reproduce a Fabric API or Recrafted
+stack. Those JAR hashes are part of the saved plan.
+
 Dedicated station timing uses `benchmarks/station_parity.py --timings` to
 measure the menu packets that trigger smithing and stonecutting previews.
 Each window sums three repetitions of the relevant menu cases. Inventory

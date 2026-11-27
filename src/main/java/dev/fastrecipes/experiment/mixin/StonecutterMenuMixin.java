@@ -1,5 +1,6 @@
 package dev.fastrecipes.experiment.mixin;
 
+import dev.fastrecipes.FastRecipesConfig;
 import dev.fastrecipes.experiment.StonecuttingIndexAccess;
 import dev.fastrecipes.experiment.StonecuttingLookup;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +22,7 @@ abstract class StonecutterMenuMixin {
     @Shadow @Final private Level level;
 
     @Unique
-    private static final boolean fastrecipes$enabled = Boolean.getBoolean("fastrecipes.stonecuttingIndex");
+    private static final boolean fastrecipes$enabled = FastRecipesConfig.current().stonecuttingIndex();
 
     @Redirect(method = "setupRecipeList", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/world/item/crafting/SelectableRecipe$SingleInputSet;selectByInput("

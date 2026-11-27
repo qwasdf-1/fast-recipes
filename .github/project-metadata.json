@@ -1,0 +1,7 @@
+{
+  "summary": "Opt-in server-side recipe lookup, crafting update, and furnace cache optimizations for Fabric.",
+  "intro": true,
+  "sections": [],
+  "install": "Install the matching Fast Recipes JAR on a dedicated Minecraft Java 26.3 server running Java 25 and Fabric Loader 0.20.1 or later. Players can join with an unmodified client. On first startup the mod creates config/fast-recipes.toml with all optimizations off. Edit the file and restart the server to enable the settings you want. Fabric API is optional for Fast Recipes.",
+  "wiki": "README.md"
+}

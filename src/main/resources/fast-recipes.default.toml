@@ -1,0 +1,13 @@
+# Fast Recipes reads this file on server startup. JVM -D options take precedence.
+# Lookup modes: off, loop, occupancy, ingredient, combined, cache, combined-cache,
+# hash-tree, hash-tree-cache, adaptive-cache.
+lookup = "off"
+
+# Applies only when a cached lookup mode is selected. Valid range: 1–16.
+crafting_cache_entries = 1
+
+batch_crafting = false
+smithing_index = false
+stonecutting_index = false
+furnace_hits = false
+furnace_misses = false

@@ -264,7 +264,11 @@ def main() -> None:
     parser.add_argument("--packets", required=True, type=Path, help="26.3 server reports/packets.json")
     parser.add_argument("--mod", required=True, type=Path, help="Fast Recipes jar from build/libs")
     parser.add_argument("--extra-mod", action="append", type=Path, default=[])
-    parser.add_argument("--lookup", choices=("off", "loop", "occupancy", "ingredient", "combined", "cache", "combined-cache", "hash-tree", "hash-tree-cache", "adaptive-cache"), default="off")
+    modes = ("off", "loop", "occupancy", "ingredient", "combined", "cache", "combined-cache",
+             "hash-tree", "hash-tree-cache", "adaptive-cache")
+    parser.add_argument("--lookup", choices=modes, help="override the server configuration for this run")
+    parser.add_argument("--config", type=Path, help="copy a TOML configuration into the isolated server")
+    parser.add_argument("--expect-lookup", choices=modes, help="assert the effective lookup mode")
     parser.add_argument("--furnace-misses", action="store_true")
     parser.add_argument("--furnace-hits", action="store_true")
     parser.add_argument("--furnace-xp", action="store_true", help="verify player XP after taking a stock furnace result")
@@ -295,12 +299,20 @@ def main() -> None:
             raise ValueError(f"Duplicate mod filename: {jar.name}")
         shutil.copy2(jar, mods)
     packets = PacketIds.load(args.packets)
-    server = ServerProcess(install, session, "java", packets, loader="fabric", mods=mods,
-                           jvm_args=[f"-Dfastrecipes.lookup={args.lookup}",
-                                     f"-Dfastrecipes.furnaceMisses={str(args.furnace_misses).lower()}",
-                                     f"-Dfastrecipes.furnaceHits={str(args.furnace_hits).lower()}"])
+    jvm_args = []
+    if args.lookup is not None:
+        jvm_args.append(f"-Dfastrecipes.lookup={args.lookup}")
+    if args.furnace_misses:
+        jvm_args.append("-Dfastrecipes.furnaceMisses=true")
+    if args.furnace_hits:
+        jvm_args.append("-Dfastrecipes.furnaceHits=true")
+    server = ServerProcess(install, session, "java", packets, loader="fabric", mods=mods, jvm_args=jvm_args)
     print(f"Server console: {server.directory / 'console.log'}", flush=True)
     try:
+        if args.config:
+            config = server.directory / "config" / "fast-recipes.toml"
+            config.parent.mkdir(exist_ok=True)
+            shutil.copy2(args.config, config)
         hit_recipe = install_furnace_hit_recipe(server.world) if args.furnace_hits or args.furnace_xp else None
         server.start()
         server.wait_for_log(r"Loading Minecraft 26\.3 with Fabric Loader 0\.20\.1", 5)
@@ -332,8 +344,12 @@ def main() -> None:
                 suffix = " for .*blasting"
                 server.wait_for_log("Fast Recipes furnace miss experiment reused a negative result" + suffix, 5)
             server.wait_for_log("Fast Recipes furnace hit experiment reused a successful result" + suffix, 5)
-        if args.lookup != "off":
-            server.wait_for_log(f"Fast Recipes recipe experiment initialized: {args.lookup}", 5)
+        expected = args.expect_lookup or args.lookup
+        if expected == "off":
+            if any("Fast Recipes recipe experiment initialized:" in line for line in server.lines):
+                raise RuntimeError("Crafting lookup was active while off was expected")
+        elif expected:
+            server.wait_for_log(f"Fast Recipes recipe experiment initialized: {expected}", 5)
         diagnostics = server.suspicious_lines()
         if diagnostics:
             raise RuntimeError("Unexpected server diagnostics:\n" + "\n".join(diagnostics))

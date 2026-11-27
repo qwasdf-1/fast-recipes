@@ -1,5 +1,6 @@
 package dev.fastrecipes.experiment.mixin;
 
+import dev.fastrecipes.FastRecipesConfig;
 import com.mojang.logging.LogUtils;
 import dev.fastrecipes.experiment.CookingLookupCache;
 import dev.fastrecipes.experiment.FabricRecipePredicates;
@@ -34,9 +35,9 @@ abstract class CookingCacheMixin {
     private static final String fastrecipes$cookingLookup = "getRecipeFor(Lnet/minecraft/world/item/crafting/RecipeType;"
             + "Lnet/minecraft/world/item/crafting/RecipeInput;Lnet/minecraft/world/level/Level;)Ljava/util/Optional;";
     @Unique
-    private static final boolean fastrecipes$missesEnabled = Boolean.getBoolean("fastrecipes.furnaceMisses");
+    private static final boolean fastrecipes$missesEnabled = FastRecipesConfig.current().furnaceMisses();
     @Unique
-    private static final boolean fastrecipes$hitsEnabled = Boolean.getBoolean("fastrecipes.furnaceHits");
+    private static final boolean fastrecipes$hitsEnabled = FastRecipesConfig.current().furnaceHits();
     @Unique
     private static final boolean fastrecipes$fabricIngredients =
             FabricLoader.getInstance().isModLoaded("fabric-recipe-api-v1");

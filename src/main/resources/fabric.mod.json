@@ -6,6 +6,9 @@
   "description": "Opt-in server-side recipe optimizations for Minecraft.",
   "license": "Apache-2.0",
   "environment": "server",
+  "entrypoints": {
+    "server": ["dev.fastrecipes.FastRecipes"]
+  },
   "mixins": ["fast_recipes.mixins.json"],
   "depends": {
     "fabricloader": ">=${loader}",

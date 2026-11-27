@@ -12,7 +12,7 @@ and cooking in Minecraft. Fabric Loader is the sole required mod dependency. Fab
 | Gradle wrapper | 9.9.0 |
 | Java | 25 |
 | Mod ID | `fast_recipes` |
-| Version | `0.1.0-alpha.1` |
+| Version | `0.1.0-alpha.2` |
 | License | Apache-2.0 |
 
 The [reference lock](references.lock.json) records source and artifact

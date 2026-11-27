@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-alpha.2
+
+- Added startup settings in `config/fast-recipes.toml`. All optimizations
+  default to off and existing JVM flags take precedence.
+- Added Modrinth and CurseForge workflows that publish the verified GitHub
+  release asset when the repository is configured for each host.
+
 ## 0.1.0-alpha.1
 
 First opt-in alpha for dedicated Minecraft Java 26.3 servers. Requires

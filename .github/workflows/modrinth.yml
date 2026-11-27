@@ -1,0 +1,75 @@
+name: Publish to Modrinth
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing GitHub Release tag
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: modrinth-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.event_name == 'workflow_dispatch' || vars.MODRINTH_PROJECT_ID != ''
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: main
+      - name: Download and verify the GitHub release artifact
+        run: bash .github/scripts/prepare-release.sh
+      - name: Publish Fabric version
+        env:
+          PROJECT_ID: ${{ vars.MODRINTH_PROJECT_ID || secrets.MODRINTH_PROJECT_ID }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ "$PROJECT_ID" =~ ^[A-Za-z0-9]+$ ]] || { echo "Set MODRINTH_PROJECT_ID to the project ID." >&2; exit 1; }
+          test -n "$MODRINTH_TOKEN" || { echo "Set the MODRINTH_TOKEN Actions secret." >&2; exit 1; }
+
+          api=https://api.modrinth.com/v2
+          headers=(-H 'User-Agent: qwasdf-1/fast-recipes-github-publisher' -H "Authorization: $MODRINTH_TOKEN")
+          result="$RUNNER_TEMP/modrinth-response.json"
+          status="$(curl --silent --show-error "${headers[@]}" --output "$result" --write-out '%{http_code}' \
+            "$api/project/$PROJECT_ID/version/$VERSION")"
+          case "$status" in
+            200)
+              hash="$(sha512sum "$JAR_FILE" | cut -d ' ' -f 1)"
+              jq -e --arg project "$PROJECT_ID" --arg hash "$hash" --arg version "$VERSION" \
+                --arg minecraft "$MINECRAFT" --arg channel "$CHANNEL" \
+                '.project_id == $project and .version_number == $version and .version_type == $channel
+                 and .game_versions == [$minecraft] and .loaders == ["fabric"]
+                 and any(.files[]; .primary and .hashes.sha512 == $hash)' "$result" >/dev/null || {
+                echo "Existing Modrinth version differs from the release." >&2
+                exit 1
+              }
+              echo "Modrinth already has the matching release."
+              exit 0
+              ;;
+            404) ;;
+            *) echo "Could not check Modrinth version (HTTP $status)." >&2; exit 1 ;;
+          esac
+
+          metadata="$RUNNER_TEMP/modrinth-version.json"
+          jq -n --arg name "Fast Recipes $VERSION" --arg version "$VERSION" --arg project "$PROJECT_ID" \
+            --arg minecraft "$MINECRAFT" --arg channel "$CHANNEL" --rawfile changelog "$CHANGELOG_FILE" \
+            '{name:$name, version_number:$version, project_id:$project, changelog:$changelog,
+              game_versions:[$minecraft], loaders:["fabric"], environment:"dedicated_server_only",
+              version_type:$channel, featured:false, status:"listed", dependencies:[],
+              file_parts:["modfile"], primary_file:"modfile"}' > "$metadata"
+          curl --silent --show-error --fail "${headers[@]}" \
+            -F "data=@$metadata;type=application/json" -F "modfile=@$JAR_FILE" "$api/version" > "$result"
+          jq -er 'select(.id and .version_number) | "Published Modrinth version \(.version_number) (\(.id))"' "$result"

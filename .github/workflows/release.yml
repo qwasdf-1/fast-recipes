@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      MODRINTH_PROJECT_ID: ${{ vars.MODRINTH_PROJECT_ID || secrets.MODRINTH_PROJECT_ID }}
+      CURSEFORGE_PROJECT_ID: ${{ vars.CURSEFORGE_PROJECT_ID || secrets.CURSEFORGE_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Check documentation and build
+        run: |
+          python3 scripts/check_doc_boundary.py
+          ./gradlew build
+      - name: Match the tested JAR and publish the release
+        id: github-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          version="$(sed -n 's/^mod_version=//p' gradle.properties)"
+          [[ "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-(alpha|beta)\.[0-9]+)?$ ]]
+          test "$GITHUB_REF_NAME" = "v$version"
+          jar="build/libs/fast-recipes-${version}.jar"
+          digest="$(git tag -l --format='%(contents)' "$GITHUB_REF_NAME" | sed -nE 's/^SHA256 ([0-9a-f]{64})$/\1/p')"
+          test "${#digest}" -eq 64
+          printf '%s  %s\n' "$digest" "$jar" | sha256sum --check
+          awk -v heading="## $version" '$0 == heading { found=1; next } found && /^## / { exit } found' CHANGELOG.md > release-notes.md
+          test -s release-notes.md
+          case "$version" in
+            *-alpha.*|*-beta.*) release_flag=--prerelease ;;
+            *) release_flag=--latest ;;
+          esac
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            RELEASE_TAG="$GITHUB_REF_NAME" bash .github/scripts/prepare-release.sh
+          else
+            gh release create "$GITHUB_REF_NAME" "$jar" --verify-tag "$release_flag" \
+              --title "Fast Recipes $version" --notes-file release-notes.md
+          fi
+
+      - name: Dispatch Modrinth publishing
+        if: env.MODRINTH_PROJECT_ID != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run modrinth.yml --ref main --field tag="$GITHUB_REF_NAME"
+      - name: Dispatch CurseForge publishing
+        if: ${{ !cancelled() && env.CURSEFORGE_PROJECT_ID != '' && steps.github-release.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run curseforge.yml --ref main --field tag="$GITHUB_REF_NAME"
