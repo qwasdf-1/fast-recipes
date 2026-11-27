@@ -1,0 +1,100 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+loom {
+    serverOnlyMinecraftJar()
+    runs {
+        remove client
+        server {
+            runDir = 'run'
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    compileOnly 'net.fabricmc.fabric-api:fabric-recipe-api-v1:10.0.11+b9b88df45d'
+}
+
+def metadata = [
+    version: project.version,
+    minecraft: project.minecraft_version,
+    loader: project.loader_version,
+    java: project.java_version,
+]
+
+processResources {
+    inputs.properties metadata
+    filesMatching('fabric.mod.json') {
+        expand metadata
+    }
+}
+
+tasks.withType(Jar).configureEach {
+    from('LICENSE') {
+        rename { "LICENSE_${project.base.archivesName.get()}" }
+    }
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(project.java_version.toInteger())
+    withSourcesJar()
+}
+
+// Benchmarks use the same compiled lookup code as the packaged mod.
+sourceSets {
+    benchmark {
+        java.srcDirs = ['benchmarks/java']
+        compileClasspath += sourceSets.main.runtimeClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
+    }
+}
+
+tasks.register('benchmarkLookup', JavaExec) {
+    group = 'verification'
+    description = 'Run the isolated crafting lookup differential and timing fixture.'
+    classpath = sourceSets.benchmark.runtimeClasspath
+    mainClass = 'dev.fastrecipes.benchmark.LookupBenchmark'
+    jvmArgs '-Xms512m', '-Xmx512m'
+    if (providers.gradleProperty('lookupCacheCapacity').isPresent()) {
+        args '--cache-capacity'
+    } else if (providers.gradleProperty('lookupAdaptive').isPresent()) {
+        args '--adaptive'
+    } else if (providers.gradleProperty('lookupTreeQuick').isPresent()) {
+        args '--tree-quick'
+    } else if (providers.gradleProperty('lookupCacheQuick').isPresent()) {
+        args '--cache-quick'
+    } else if (providers.gradleProperty('lookupQuick').isPresent()) {
+        args '--quick'
+    }
+}
+
+tasks.register('verifyLookup', JavaExec) {
+    group = 'verification'
+    description = 'Check selected recipe identity on a built-in and synthetic fixture.'
+    classpath = sourceSets.benchmark.runtimeClasspath
+    mainClass = 'dev.fastrecipes.benchmark.LookupBenchmark'
+    jvmArgs '-Xms512m', '-Xmx512m'
+    args '--verify-only'
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('verifyLookup')
+}
+
+tasks.register('benchmarkStations', JavaExec) {
+    group = 'verification'
+    description = 'Compare smithing and stonecutting lookups and measure vanilla furnace hints.'
+    classpath = sourceSets.benchmark.runtimeClasspath
+    mainClass = 'dev.fastrecipes.benchmark.StationBenchmark'
+    jvmArgs '-Xms512m', '-Xmx512m'
+}

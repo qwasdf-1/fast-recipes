@@ -1,0 +1,515 @@
+{
+  "target": {
+    "minecraft": "26.3",
+    "mappings": "Mojang unobfuscated names",
+    "loader": "Fabric 0.20.1",
+    "loom": "1.18.4",
+    "gradle": "9.9.0",
+    "java": "Ubuntu OpenJDK 25.0.5.1",
+    "benchmark_jvm_args": [
+      "-Xms512m",
+      "-Xmx512m"
+    ],
+    "bundled_server_sha256": "d052f14d7a173734fba553711e5b570162e2f2a313267ee31a21b975a679be64",
+    "fabric_launcher": {
+      "version": "1.1.2",
+      "url": "https://meta.fabricmc.net/v2/versions/loader/26.3/0.20.1/1.1.2/server/jar",
+      "sha256": "70446947655b4f8f286aba896aa4c19a255e8ca8a730636ef2a6017ae4415d95"
+    }
+  },
+  "repositories": [
+    {
+      "name": "FabricFastFurnace",
+      "url": "https://github.com/Tfarcenim/FabricFastFurnace.git",
+      "revision": "4c0a7cebced9faf29d8010d4c7792b3ba64ce064",
+      "ref": "1.16.x",
+      "release": "2.4",
+      "minecraft": "1.16.5",
+      "loader": "Fabric",
+      "loader_version": "0.9.1+build.205",
+      "license": {
+        "id": "MIT",
+        "path": "LICENSE",
+        "sha256": "65359410b84c4b4ae8b3eba3a0aa5e7e9cd64b511cf3ef22704bc3b750c9724e"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "Fast-Recipe-Search",
+      "url": "https://github.com/nutant233/Fast-Recipe-Search.git",
+      "revision": "1d5595023d110f663314385ad267f5ab64565561",
+      "ref": "forge/1.20",
+      "release": "1.20.1-26.8.4-forge",
+      "minecraft": "1.20.1",
+      "loader": "Forge",
+      "loader_version": "47.4.23",
+      "license": {
+        "id": "LGPL-3.0-or-later",
+        "path": "LICENSE.txt",
+        "sha256": "85e20c13b6d9a24f3ad4b0d9ab7ed7f1b9a04e7a14c5408de8e93bd7b9b5534e"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected",
+      "modern_source": {
+        "revision": "af7efbe204a40072c3451a36e0e6d8ac13e8e233",
+        "ref": "origin/neoforge/26.1",
+        "build_version": "26.1-26.8.4-neoforge",
+        "minecraft_build_target": "26.1",
+        "loader": "NeoForge",
+        "loader_version": "26.1.0.19-beta",
+        "license": {
+          "id": "LGPL-3.0-or-later",
+          "path": "LICENSE.txt",
+          "sha256": "85e20c13b6d9a24f3ad4b0d9ab7ed7f1b9a04e7a14c5408de8e93bd7b9b5534e"
+        },
+        "verification": "Inspected RecipeManagerMixin and RecipeDB at the pinned branch tip. Public release listed for the 26.1.x series. Source-to-artifact identity unverified.",
+        "release_listing": "https://www.curseforge.com/minecraft/mc-mods/fast-recipe-search/files/all"
+      }
+    },
+    {
+      "name": "FastFurnace",
+      "url": "https://github.com/Shadows-of-Fire/FastFurnace.git",
+      "revision": "9931e4d6f5de1f150c445c0ad6e3084dacb3d13f",
+      "ref": "26.1",
+      "release": "10.0.0",
+      "minecraft": "26.1.2",
+      "loader": "NeoForge",
+      "loader_version": "26.1.2.76",
+      "license": {
+        "id": "MIT",
+        "path": "LICENSE",
+        "sha256": "418c2a244f332d6f802e3a8785aa3d431e05e42788ca49e60e214ca3beb02b1f"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "FastFurnace-Fabric-Unofficial-Port",
+      "url": "https://github.com/Al-Capone11/FastFurnace-Fabric-Unofficial-Port.git",
+      "revision": "430f1a70fb12e06608594887a0391b0ce82b3b67",
+      "ref": "26.1",
+      "release": "10.0.0",
+      "minecraft": "26.2",
+      "loader": "Fabric",
+      "loader_version": "0.19.3",
+      "license": {
+        "id": "MIT",
+        "path": "LICENSE",
+        "sha256": "418c2a244f332d6f802e3a8785aa3d431e05e42788ca49e60e214ca3beb02b1f"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "FastSuite",
+      "url": "https://github.com/Shadows-of-Fire/FastSuite.git",
+      "revision": "b5e781661cae2bded2889fc9eb194ab552ca2020",
+      "ref": "26.1",
+      "release": "7.0.0",
+      "minecraft": "26.1.2",
+      "loader": "NeoForge",
+      "loader_version": "26.1.2.76",
+      "license": {
+        "id": "MIT",
+        "path": "LICENSE",
+        "sha256": "7b18de71398e47ee48adf5fe1b6f3f0613e9ca338479a17072e1c032079fd3d0"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "FastSuite-Fabric-Unofficial-Port",
+      "url": "https://github.com/Al-Capone11/FastSuite-Fabric-Unofficial-Port.git",
+      "revision": "8df37321ed73392d4b013a8799388e5b6205821e",
+      "ref": "26.1",
+      "release": "7.0.0",
+      "minecraft": "26.2",
+      "loader": "Fabric",
+      "loader_version": "0.19.3",
+      "license": {
+        "id": "MIT",
+        "path": "LICENSE",
+        "sha256": "7b18de71398e47ee48adf5fe1b6f3f0613e9ca338479a17072e1c032079fd3d0"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "FastWorkbench",
+      "url": "https://github.com/Shadows-of-Fire/FastWorkbench.git",
+      "revision": "1dd2f314b48e8210f4c40b5336b13dd0b93d3809",
+      "ref": "26.1",
+      "release": "10.0.0",
+      "minecraft": "26.1.2",
+      "loader": "NeoForge",
+      "loader_version": "26.1.2.64-beta",
+      "license": {
+        "id": "MIT",
+        "path": "LICENSE",
+        "sha256": "418c2a244f332d6f802e3a8785aa3d431e05e42788ca49e60e214ca3beb02b1f"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "FastWorkbench-Fabric-Unofficial-Port",
+      "url": "https://github.com/Al-Capone11/FastWorkbench-Fabric-Unofficial-Port.git",
+      "revision": "c5b08798c67c0e9e38aa5ade3fe0a8be7d98d602",
+      "ref": "26.1",
+      "release": "10.0.0",
+      "minecraft": "26.2",
+      "loader": "Fabric",
+      "loader_version": "0.19.3",
+      "license": {
+        "id": "MIT",
+        "path": "LICENSE",
+        "sha256": "418c2a244f332d6f802e3a8785aa3d431e05e42788ca49e60e214ca3beb02b1f"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "lithium",
+      "url": "https://github.com/CaffeineMC/lithium.git",
+      "revision": "f328cc536946a633b91788398353fbf0ac250e8b",
+      "ref": "mc26.3-0.26.4",
+      "release": "0.26.4",
+      "minecraft": "26.3",
+      "loader": "Fabric",
+      "loader_version": "0.19.5",
+      "license": {
+        "id": "LGPL-3.0-only",
+        "path": "LICENSE.md",
+        "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    },
+    {
+      "name": "recipeessentials",
+      "url": "https://github.com/someaddons/recipeessentials.git",
+      "revision": "99158ea1516c4ba57a6495b9a515d8ee3875bb95",
+      "ref": "origin/fabric26.3",
+      "release": "4.7",
+      "minecraft": "26.3",
+      "loader": "Fabric",
+      "loader_version": "0.19.5",
+      "license": {
+        "id": "ARR",
+        "path": "src/main/resources/fabric.mod.json",
+        "sha256": "ebcd4617ebfbaf309ce777b5ef837821f830c4aadc33ff7dc5d0c5b6c8695248",
+        "path_kind": "Fabric metadata declaration"
+      },
+      "acquisition": "git clone",
+      "verification": "pinned checkout; build declarations and license evidence inspected"
+    }
+  ],
+  "artifacts": [
+    {
+      "project": "fastfurnace-fabric",
+      "project_api": "https://api.modrinth.com/v2/project/fastfurnace-fabric",
+      "source_url": null,
+      "license": "MIT",
+      "version": "9.0.1",
+      "minecraft": [
+        "1.21.11"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "url": "https://cdn.modrinth.com/data/fZ3j1CdO/versions/LIV0CKau/FastFurnace-1.21.11-9.0.1.jar",
+      "sha256": "da73c1bdf0ee805c3c4e1d680869b4476c04eb529b286f24d8ec2a1bc5243cc2",
+      "metadata": {
+        "schemaVersion": 1,
+        "id": "fastfurnace",
+        "version": "9.0.1",
+        "name": "FastFurnace [FABRIC]",
+        "icon": "icon/icon.png",
+        "description": "Furnacing things faster, performance-wise. [Unofficial port]",
+        "authors": [
+          "Shadows_of_Fire, 1influence"
+        ],
+        "license": "MIT License",
+        "environment": "*",
+        "entrypoints": {
+          "main": [
+            "dev.shadowsoffire.fastfurnace.FastFurnace"
+          ]
+        },
+        "mixins": [
+          "fastfurnace.mixins.json"
+        ],
+        "depends": {
+          "fabricloader": ">=0.18.2",
+          "minecraft": "=1.21.11",
+          "java": ">=21"
+        }
+      },
+      "mixins": {
+        "fastfurnace.mixins.json": {
+          "required": true,
+          "minVersion": "0.8",
+          "package": "dev.shadowsoffire.fastfurnace.mixin",
+          "compatibilityLevel": "JAVA_21",
+          "mixins": [
+            "MixinAbstractFurnaceBlockEntity"
+          ],
+          "client": [],
+          "injectors": {
+            "defaultRequire": 1
+          },
+          "refmap": "FastFurnace-1.21.4-refmap.json"
+        }
+      },
+      "verification": "Modrinth SHA-512 validated; static jar inspection only",
+      "acquisition": "Modrinth release API and CDN"
+    },
+    {
+      "project": "fastsuite-fabric",
+      "project_api": "https://api.modrinth.com/v2/project/fastsuite-fabric",
+      "source_url": null,
+      "license": "MIT",
+      "version": "6.0.7",
+      "minecraft": [
+        "1.21.11"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "url": "https://cdn.modrinth.com/data/83xBWJAx/versions/Jx9Yr7u1/FastSuite-1.21.11-6.0.7.jar",
+      "sha256": "1a2646222b9f492416c3af6ac49c80daa734da1094e879b2700c1e68ad12d364",
+      "metadata": {
+        "schemaVersion": 1,
+        "id": "fastsuite",
+        "version": "6.0.7",
+        "name": "FastSuite [fabric]",
+        "description": "Introduces multithreading to the json recipe system. [Unofficial Port]",
+        "authors": [
+          "Shadows_of_Fire, 1Influence"
+        ],
+        "contact": {},
+        "license": "MIT",
+        "icon": "assets/fastsuite/icon.png",
+        "environment": "*",
+        "entrypoints": {
+          "main": [
+            "dev.shadowsoffire.fastsuite.FastSuite"
+          ],
+          "modmenu": [
+            "dev.shadowsoffire.fastsuite.ModMenuIntegration"
+          ]
+        },
+        "accessWidener": "fastsuite.accesswidener",
+        "mixins": [
+          "fastsuite.mixins.json"
+        ],
+        "depends": {
+          "fabricloader": ">=0.18.2",
+          "minecraft": "=1.21.11",
+          "java": ">=21",
+          "fabric-api": "*",
+          "modmenu": "*",
+          "cloth-config": "*"
+        }
+      },
+      "mixins": {
+        "fastsuite.mixins.json": {
+          "required": true,
+          "package": "dev.shadowsoffire.fastsuite.mixin",
+          "compatibilityLevel": "JAVA_21",
+          "mixins": [
+            "CraftingInputMixin",
+            "IngredientMixin",
+            "ItemStackMixin",
+            "RecipeManagerAccessor",
+            "ServerResourcesMixin"
+          ],
+          "client": [],
+          "injectors": {
+            "defaultRequire": 1
+          }
+        }
+      },
+      "verification": "Modrinth SHA-512 validated; static jar inspection only",
+      "acquisition": "Modrinth release API and CDN"
+    },
+    {
+      "project": "fastworkbench-fabric",
+      "project_api": "https://api.modrinth.com/v2/project/fastworkbench-fabric",
+      "source_url": null,
+      "license": "MIT",
+      "version": "9.1.3",
+      "minecraft": [
+        "1.21.11"
+      ],
+      "loaders": [
+        "fabric"
+      ],
+      "url": "https://cdn.modrinth.com/data/ZfW9nBVI/versions/Rh6pvOUr/FastWorkbench-1.21.11-9.1.3.jar",
+      "sha256": "587baa8da08a7a301fa7ac027639de41da163303f0eebc6a387ae35d45477097",
+      "metadata": {
+        "schemaVersion": 1,
+        "id": "fastbench",
+        "version": "9.1.3",
+        "name": "Fast Workbench [Fabric]",
+        "description": "Speeding up crafting operations - massively. [unofficial port]",
+        "authors": [
+          "Shadows_of_Fire, 1influence"
+        ],
+        "contact": {
+          "homepage": "https://modrinth.com/project/fastworkbench-fabric"
+        },
+        "license": "MIT License",
+        "icon": "assets/fastbench/icon.png",
+        "environment": "*",
+        "accessWidener": "fastbench.accesswidener",
+        "entrypoints": {
+          "main": [
+            "dev.shadowsoffire.fastbench.FastBench"
+          ],
+          "client": [
+            "dev.shadowsoffire.fastbench.FastBenchClient"
+          ],
+          "modmenu": [
+            "dev.shadowsoffire.fastbench.ModMenuIntegration"
+          ]
+        },
+        "mixins": [
+          "fastbench.mixins.json"
+        ],
+        "depends": {
+          "fabricloader": ">=0.18.2",
+          "minecraft": "1.21.11",
+          "java": ">=21",
+          "fabric-api": "*"
+        },
+        "suggests": {
+          "modmenu": "*",
+          "cloth-config": "*"
+        }
+      },
+      "mixins": {
+        "fastbench.mixins.json": {
+          "required": true,
+          "minVersion": "0.8",
+          "package": "dev.shadowsoffire.fastbench.mixin",
+          "compatibilityLevel": "JAVA_21",
+          "mixins": [
+            "MixinInventoryMenu",
+            "MixinCraftingMenu",
+            "client.MixinCraftingScreen",
+            "AbstractContainerMenuInvoker",
+            "AbstractCraftingScreenHandlerAccessor",
+            "MixinAbstractCraftingScreenHandler"
+          ],
+          "client": [],
+          "injectors": {
+            "defaultRequire": 1
+          }
+        }
+      },
+      "verification": "Modrinth SHA-512 validated; static jar inspection only",
+      "acquisition": "Modrinth release API and CDN"
+    },
+    {
+      "name": "lithium-mc26.3-0.26.4-fabric",
+      "release_page": "https://modrinth.com/mod/lithium/version/Lal8mJGR",
+      "url": "https://cdn.modrinth.com/data/gvQqBUqZ/versions/Lal8mJGR/lithium-fabric-0.26.4%2Bmc26.3.jar",
+      "sha256": "d4677707fd539d778382deaaea4a466243a81062432ee85f8d62a0eedb49f114",
+      "metadata": {
+        "schemaVersion": 1,
+        "id": "lithium",
+        "version": "0.26.4+mc26.3",
+        "name": "Lithium",
+        "description": "Lithium is a free and open-source optimization mod for Minecraft which makes a wide range of performance improvements to the game.",
+        "authors": [
+          "JellySquid",
+          "2No2Name"
+        ],
+        "contact": {
+          "homepage": "https://jellysquid.me/projects/",
+          "sources": "https://github.com/CaffeineMC/lithium-fabric",
+          "issues": "https://github.com/CaffeineMC/lithium-fabric/issues"
+        },
+        "license": "LGPL-3.0-only",
+        "icon": "assets/lithium/lithium-icon.png",
+        "environment": "*",
+        "entrypoints": {
+          "main": [
+            "net.caffeinemc.mods.lithium.fabric.LithiumFabricMod"
+          ]
+        },
+        "mixins": [
+          "lithium.mixins.json",
+          "lithium-fabric.mixins.json"
+        ],
+        "accessWidener": "lithium.accesswidener",
+        "depends": {
+          "fabricloader": ">=0.19.5",
+          "minecraft": "~26.3",
+          "mixinextras": ">=0.5.5"
+        },
+        "breaks": {
+          "optifabric": "*"
+        }
+      },
+      "verification": "Modrinth SHA-512 verified; static inspection only"
+    },
+    {
+      "name": "recipeessentials-fabric-26.3-4.7",
+      "release_page": "https://www.curseforge.com/minecraft/mc-mods/recipe-essentials-forge-fabric/files/9511907",
+      "url": "https://edge.forgecdn.net/files/9511/907/recipeessentials-fabric-26.3-4.7.jar",
+      "sha256": "a38b7176aab48e669eaca848b5df6e1c473be34d8fd0dab2247fffe2ce814688",
+      "metadata": {
+        "schemaVersion": 1,
+        "id": "recipeessentials",
+        "version": "26.3-4.7",
+        "name": "recipeessentials Mod",
+        "description": "",
+        "authors": [
+          ""
+        ],
+        "contact": {
+          "homepage": "",
+          "sources": ""
+        },
+        "license": "ARR",
+        "environment": "*",
+        "entrypoints": {
+          "main": [
+            "com.recipeessentials.RecipeEssentials"
+          ],
+          "client": [
+            "com.recipeessentials.RecipeEssentialsClient"
+          ]
+        },
+        "mixins": [
+          "recipeessentials.mixins.json"
+        ],
+        "accessWidener": "recipeessentials.accessWidener",
+        "depends": {
+          "fabric-api": "*",
+          "minecraft": "26.x",
+          "cupboard": "*"
+        },
+        "suggests": {
+          "another-mod": "*"
+        }
+      },
+      "verification": "official CurseForge CDN download; static inspection only"
+    }
+  ],
+  "compatibility_dependencies": [
+    {
+      "name": "cupboard-fabric-26.3-4.2",
+      "release": "https://www.curseforge.com/minecraft/mc-mods/cupboard/files/8890593",
+      "sha256": "e40192b795580401e7198a55d05dcb92b45fafc65a8cb44b1dfc96846c20a9df"
+    },
+    {
+      "name": "fabric-api-0.165.0+26.3",
+      "release": "https://modrinth.com/mod/fabric-api/version/0.165.0%2B26.3",
+      "sha256": "18442e2ad466d6ef41c37dbb4cb68495e6ca6658b1f1ee9be76143d155ef2c88"
+    }
+  ]
+}

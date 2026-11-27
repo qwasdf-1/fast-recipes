@@ -1,0 +1,27 @@
+.gradle/
+.gradle-user-home/
+build/
+run/
+logs/
+.idea/
+.vscode/
+*.iml
+__pycache__/
+.pytest_cache/
+/references/
+/results/*
+!/results/README.md
+/recipe-optimization-handoff/
+/recipe-optimization-handoff.zip
+
+# Match the neighboring repos' local guidance and planning files.
+/AGENTS.md
+/CLAUDE.md
+/docs/issue-ledger.md
+/docs/open-work.md
+/docs/TODOS.md
+/docs/work-register.md
+/docs/local/
+
+# Git worktrees
+/.worktrees/
