@@ -1,4 +1,5 @@
 {
+  "curseforge_id": 1834237,
   "summary": "Opt-in server-side recipe lookup, crafting update, and furnace cache optimizations for Fabric.",
   "intro": true,
   "sections": [],
