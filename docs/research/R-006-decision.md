@@ -215,3 +215,18 @@ substantial variation. Keep batching and both indexes opt-in. Raw samples,
 logs, and paired summaries are under
 `results/station-packet-study.34wZbRVi/stock-short/` and
 `results/station-packet-study.34wZbRVi/heavy-short/`.
+
+## Recrafted batching replication
+
+The alpha.2 JAR ran six counterbalanced blocks on Recrafted 26.3 with
+Fabric API 0.165.0. Each block compared adaptive lookup, a repeated
+adaptive control, and adaptive lookup with batching. All 72 measured
+windows passed the host quality checks and verified 64 crafts per window.
+Every JVM also verified remainders and saved crafting counts.
+
+Batching sent 68 result-slot updates per window. Both controls sent 260.
+The paired median server-thread CPU change was −1.3% with a 96.875%
+interval of −26.1% to +38.0%. The repeated control changed −6.0% with
+an interval of −17.9% to +7.0%. The packet reduction is reproducible.
+The CPU evidence leaves batching opt-in. Raw data and checkpoints are
+under `results/stable-batching-recrafted.lxdWe7B7/`.
